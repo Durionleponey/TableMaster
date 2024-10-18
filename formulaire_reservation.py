@@ -5,7 +5,7 @@ from tkinter import *
 formu = Tk()
 formu.geometry('500x400')
 formu.title("Formulaire de réservation")
-formu.configure(bg='#2c3e50')  # Couleur de fond sombre (noir ou gris foncé)
+formu.configure(bg='lightgrey')  # Couleur de fond sombre (noir ou gris foncé)
 formu.resizable(height=False, width=False)
 
 # Différentes fonctions :
@@ -18,11 +18,11 @@ def register_client():
     print(f"Vous êtes {register_nom} {register_prenom}, vous serez {register_nbre} et vous avez réservé à {register_heure}.")
 
 # Style commun des labels
-label_style = {'bg': '#2c3e50', 'fg': 'white', 'font': ('Arial', 12)}
+label_style = {'bg': 'lightgrey', 'fg': 'white', 'font': ('Arial', 12)}
 entry_style = {'width': 40, 'font': ('Arial', 12)}
 
 # Titre du formulaire
-title = Label(formu, text="Veuillez entrer vos informations", font=('Arial', 16, 'bold'), fg='white', bg='#2c3e50')
+title = Label(formu, text="Veuillez entrer vos informations", font=('Arial', 16, 'bold'), fg='white', bg='lightgrey')
 title.grid(row=0, column=0, columnspan=2, pady=20)
 
 # Nom Client
