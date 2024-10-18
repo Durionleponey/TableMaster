@@ -12,7 +12,12 @@ formu.resizable(height=True, width=False)
 #Différentes fonctions :
 
 def register_client():
-    pass
+    register_nom = zone_nom.get()
+    register_prenom = zone_prenom.get()
+    register_nbre = zone_nombre.get()
+    register_heure = zone_heure.get()
+
+    print(f"Vous êtes {register_nom} {register_prenom} vous serrez : {register_nbre} et vous avez réserver à : {register_heure}")
 
 
 
