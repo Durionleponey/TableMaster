@@ -194,4 +194,4 @@ validation.grid(row=5, column=0, columnspan=2, pady=20)
 formu.mainloop()
 
 
-if __name__ = "__main__"
+#if __name__ = "__main__"
