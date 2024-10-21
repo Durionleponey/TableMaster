@@ -5,7 +5,7 @@ import subprocess
 # Créer la fenêtre
 fenetre = Tk()
 fenetre.geometry('600x600')
-fenetre.title("Mon application")
+fenetre.title("La Bonne Fourchette")
 fenetre['bg'] = 'lightgrey'
 fenetre.resizable(height=False, width=False)
 
