@@ -85,8 +85,7 @@ def configuration_table():
         print("La table sélectionnée n'existe pas.")
         return what_table, None
 
-
-def supp_last_table_add(what_table): #Récupération du dernier numéro de table
+"""def supp_last_table_add(what_table): #Récupération du dernier numéro de table
     with open('Tables.json', 'r') as file:
         tables = json.load(file)
         for key, i in tables.items():
@@ -96,7 +95,7 @@ def supp_last_table_add(what_table): #Récupération du dernier numéro de table
     #Mise à jour du fichier :
     with open('Tables.json', 'w') as file:
         json.dump(tables, file, indent=4)
-        print("La table est bien supprimée ! ")
+        print("La table est bien supprimée ! ")"""
 
 
 
@@ -104,5 +103,5 @@ def supp_last_table_add(what_table): #Récupération du dernier numéro de table
 # Appel des fonctions
 what_table, reservation = configuration_table()
 
-if __name__ == '__main__':
-    supp_last_table_add(what_table)
+"""if __name__ == '__main__':
+    supp_last_table_add(what_table)"""
