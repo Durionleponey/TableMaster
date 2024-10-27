@@ -1,22 +1,30 @@
 {
-    "table_un": {
+    "table_1": {
         "numero": 1,
         "statut": true
     },
-    "table_deux": {
+    "table_2": {
         "numero": 2,
         "statut": true
     },
-    "table_trois": {
+    "table_3": {
         "numero": 3,
         "statut": true
     },
-    "table_quatre": {
+    "table_4": {
         "numero": 4,
         "statut": true
     },
-    "table_cinq": {
+    "table_5": {
         "numero": 5,
+        "statut": true
+    },
+    "table_6": {
+        "numero": 6,
+        "statut": true
+    },
+    "table_7": {
+        "numero": 7,
         "statut": true
     }
 }
