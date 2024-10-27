@@ -10,14 +10,17 @@ for key, table in tables.items():
 
 
 def configuration_table():
-    # Saisie et vérification de la table choisie
     what_table = input('Quelle table voulez-vous ? : ')
-    while not what_table.isdigit() or int(what_table) < 1 or int(what_table) > 5:
-        print("Erreur, la table n'existe pas !")
-        what_table = input('Quelle table voulez-vous ? : ')
-    what_table = int(what_table)
+    if what_table == "":
+        print("Vous n'avez entrer aucune donnée : ")
+        what_table = input("Quelle table voulez-vous ? : ")
+    else:
+        while not what_table.isdigit() or int(what_table) < 1 or int(what_table) > 5:
+            print("Erreur, la table n'existe pas !")
+            what_table = input('Quelle table voulez-vous ? : ')
+        what_table = int(what_table)
 
-    print(f"Vous avez sélectionné la table : {what_table}")
+        print(f"Vous avez sélectionné la table : {what_table}")
 
     with open('Tables.json', 'r') as file2:
         tables = json.load(file2)
@@ -34,7 +37,7 @@ def configuration_table():
                 add_phone_number = int(input("Veuillez entrer votre numéro de téléphone : "))
                 add_hour = input("Veuillez entrer l'heure d'arrivée (format HH:MM) : ")
 
-                # Ajout des informations de réservation et marquage de la table
+                # Ajout des informations de réservation
                 details["statut"] = False
                 details["reservation"] = {
                     "nom": add_name,
@@ -76,6 +79,9 @@ def supp_last_table_add(what_table):
 
 def supp_choice_table():
     table_for_supp = int(input("Veuillez entrer la table que vous désirez supprimer : "))
+    if table_for_supp == " ":
+        print("Vous n'avez rentrer aucune données !")
+        return
 
     with open('Tables.json', 'r') as file:
         tables = json.load(file)
@@ -93,7 +99,6 @@ def add_new_table():
     if ask_add == "o":
         num_table = int(input("Entrez le numéro de la nouvelle table : "))
 
-        # Charger les tables existantes depuis le fichier JSON
         with open('Tables.json', 'r') as file:
             tables = json.load(file)
 
@@ -101,16 +106,15 @@ def add_new_table():
         for table in tables.values():
             if num_table == table["numero"]:
                 print('La table existe déjà ! Choisissez un nouveau numéro !')
-                return  # Sortir de la fonction si la table existe déjà
+                return
 
-        # Ajouter la nouvelle table avec un statut "disponible"
+        # Ajouter la nouvelle table avec un statut dispo
         new_table_key = f"table_{num_table}"
         tables[new_table_key] = {
             "numero": num_table,
             "statut": True
         }
 
-        # Sauvegarder les modifications dans le fichier JSON
         with open('Tables.json', 'w') as file:
             json.dump(tables, file, indent=4)
 
@@ -130,7 +134,6 @@ def look_reservation():
                 else:
                     print(f"La table {i['numero']} est réservée, mais les détails de la réservation sont manquants.")
 
-
 def afficher_menu():
     print("\nMenu :")
     print("1 : Configurer une table")
@@ -141,7 +144,7 @@ def afficher_menu():
     print("6 : Quitter")
 
 
-# Boucle principale pour choisir l'action à effectuer
+# Boucle pour choisir l'action à effectuer
 while True:
     afficher_menu()
     choix = input("Choisissez une option : ")
@@ -151,7 +154,7 @@ while True:
         what_table, reservation = configuration_table()
     elif choix == "2":
         # Supprimer la dernière réservation
-        if 'what_table' in locals():  # Vérifie si `what_table` est défini
+        if 'what_table' in locals():  #Permet de vérifier si 'what_table' existe bien
             supp_last_table_add(what_table)
         else:
             print("Aucune table à supprimer. Faites une réservation d'abord.")
