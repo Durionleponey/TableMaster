@@ -1,33 +1,5 @@
 import json
 
-tables = {
-    "table_un": {
-        "numero" : 1,
-        "statut": True
-    },
-    "table_deux": {
-         "numero": 2,
-        'statut': False,
-    },
-    "table_trois": {
-        "numero": 3,
-        "statut": False
-    },
-    'table_quatre': {
-        "numero" : 4,
-        'statut': False
-    },
-    'table_cinq': {
-        "numero": 5,
-        "statut": True
-    }
-}
-
-#Création d'un fichier
-with open('Tables.json', 'w+') as file:
-    json.dump(tables, file, indent=4)
-
-
 #Test lecture de fichier :
 
 with open('Tables.json', 'r') as file2:
@@ -78,7 +50,7 @@ def configuration_table():
                 return what_table, details["reservation"]
 
             else:
-                print("Cette table est déjà réservée !")
+                print(f"Cette table est déjà réservée ! Veuillez en choisir une autre !")
                 return what_table, None
 
     if not found:
