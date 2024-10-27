@@ -31,6 +31,7 @@ def configuration_table():
                 add_name = input("Veuillez entrer votre nom : ")
                 add_lname = input("Veuillez entrer votre prénom : ")
                 add_number_of_person = int(input("Veuillez entrer le nombre de personnes présentes : "))
+                add_phone_number = int(input("Veuillez entrer votre numéro de téléphone : "))
                 add_hour = input("Veuillez entrer l'heure d'arrivée (format HH:MM) : ")
 
                 # Ajout des informations de réservation et marquage de la table
@@ -39,6 +40,7 @@ def configuration_table():
                     "nom": add_name,
                     "prenom": add_lname,
                     "nombre_personnes": add_number_of_person,
+                    "numero de telephone": add_phone_number,
                     "heure_arrivee": add_hour
                 }
 
