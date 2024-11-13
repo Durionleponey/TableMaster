@@ -8,14 +8,14 @@ from utils import *
 
 def ShowSetting(context):
 
-    settings_window = tk.Toplevel()
-    settings_window.title("Settings")
-    settings_window.geometry("500x600")
-    TableMaster_Label(settings_window, "Couleur de fond :", 0, 0,"black",12,2)
+    settings_window = TableMaster_windowCreator("Settings","500x600")
+
+
+    TableMaster_Label(settings_window.getContext(), "Couleur de fond :", 0, 0,"black",12,2)
 
     colors = ["lightgray", "lightcyan", "lightblue", "lightcoral", "orange", "lightsalmon", "white", "gray", "pink", "brown"]
 
-    color_combobox = ttk.Combobox(settings_window, values=colors, state="readonly")
+    color_combobox = ttk.Combobox(settings_window.getContext(), values=colors, state="readonly")
 
     mainDb = tableMaster_dbConnexion()
     backgroundColorFromDb = (mainDb.retreaveSingleData("settings", "param_value", "param_key", "WorkingAreaColor"))

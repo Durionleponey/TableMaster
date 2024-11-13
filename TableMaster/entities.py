@@ -57,6 +57,16 @@ class TableMaster_ButtonOnTop:
         self.topButton.bind("<Leave>", lambda event: on_leave(event, self.topButton))
         self.__class__.posiX += 50
 
+class TableMaster_windowCreator:
+    def __init__(self,title, geometrie):
+        self.window = tk.Toplevel()
+        self.window.title(title)
+        self.window.geometry(geometrie)
+        self.window.grab_set()
+
+    def getContext(self):
+        return self.window
+
 
 
 

@@ -1,5 +1,5 @@
 from tkinter import messagebox
-
+from elementViewer import *
 from settings import *
 
 #interface principal menu principal
@@ -25,12 +25,13 @@ def test():
 
 
 SettingTopButton = TableMaster_ButtonOnTop(main, "gear.png", lambda: ShowSetting(restoBlueprint))
-EyeTopButton = TableMaster_ButtonOnTop(main, "eye.png", lambda: test())
+EyeTopButton = TableMaster_ButtonOnTop(main, "eye.png", lambda: ShowElementViewer())
+LabelTopButton = TableMaster_ButtonOnTop(main, "label.png", lambda: test())
 
 
 #ce qui est en bas c'est juste des exemples hors DB
 
-mainRoom = TableMaster_RoomDrawer(main,restoBlueprint,"mainRoom","blue",50, 50, 50, 700, 450, 700, 450, 50, 50, 50)
+mainRoom = TableMaster_RoomDrawer(main,restoBlueprint,"mainRoom","blue",60, 60, 50, 700, 450, 700, 450, 60, 60, 60)
 petitSalon = TableMaster_RoomDrawer(main,restoBlueprint,"Le petit salon privé","green",500, 300, 500, 650, 650, 650, 650, 500, 500, 300)
 bureauDirecteur = TableMaster_RoomDrawer(main,restoBlueprint, "Bureau du Directeur", "orange", 600, 150, 600, 350, 800, 350, 800, 150, 600, 150)
 
@@ -44,7 +45,7 @@ robin4 = TableMaster_Table(main, restoBlueprint, 4, 3,100,600,4)
 db = tableMaster_dbConnexion()
 labelDataFromDb = db.retreaveTable("labels" ,True)
 
-for i in labelDataFromDb: #ceci remplace le codee juste en bas c'est pour loader de la db
+for i in labelDataFromDb: #chargeDepuisLadb
     name = "label_" + str(i[0])
     name = TableMaster_Label(main, str(i[1]), i[2], i[3])
 
