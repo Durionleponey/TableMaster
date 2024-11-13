@@ -2,7 +2,7 @@ import sqlite3
 
 
 class tableMaster_dbConnexion:
-    def __init__(self,dbname="TableMaster.db"):#je ne comprends pas pourquoi on doit absolument faire une class pour la db, normalement on n'a que une db mais bon
+    def __init__(self,dbname="TableMaster.db"):
         self.connexion = sqlite3.connect(dbname)
         self.cursor = self.connexion.cursor()
 
@@ -14,6 +14,13 @@ class tableMaster_dbConnexion:
             print(sqlRequest)
         self.cursor.execute(sqlRequest)
         return (self.cursor.fetchone())[0]
+
+    def retreaveTable (self, table, printSQL=False):
+        sqlRequest = f'SELECT * FROM {table}'
+        if printSQL == True:
+            print(sqlRequest)
+        self.cursor.execute(sqlRequest)
+        return (self.cursor.fetchall())
 
     def updateValue(self, table, columForValueToChange, columForKeyToFind, keyToFind, updatedValue, printSQL=False):
         sqlRequest = f'UPDATE {table} SET {columForValueToChange} = "{updatedValue}" WHERE {columForKeyToFind} = "{keyToFind}"'
@@ -41,3 +48,7 @@ class tableMaster_dbConnexion:
 # backgroundColor = (db.retreaveSingleData("settings", "param_value", "param_key","WorkingAreaColor",True))
 # db.close()
 # print(backgroundColor)
+
+
+db = tableMaster_dbConnexion()
+print(db.retreaveTable("labels" ,True))
