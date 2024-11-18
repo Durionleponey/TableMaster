@@ -1,15 +1,34 @@
+import subprocess
 import tkinter as tk
 from utils import *
+
+
+import platform#pour la détection de l'os
+
+
 
 #this file contain all objects for the restaurant
 #location is the context (main)
 #target is the canvas's name (restoBlueprint)
+
 
 class TableMaster_Label:
     def __init__(self, location, txt="new label", posiX=500, posiY=500, color="black", width=16, pady=0):
         self.posiX = posiX
         self.posiY = posiY
         #creation of entity
+
+
+        # Vérifie si l'OS est macOS et si le mode sombre est activé
+        if platform.system() == "Darwin" :
+            result = subprocess.run(
+                ["defaults", "read", "-g", "AppleInterfaceStyle"],
+                capture_output=True,
+                text=True
+            )
+            if result.stdout.strip() == "Dark":
+                color="white"
+
         self.label = tk.Label(location, text=txt, font=("Arial", width), fg=color, pady=pady)
         self.label.place(x=posiX, y=posiY)
     def hide(self):

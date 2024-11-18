@@ -2,11 +2,16 @@ from tkinter import messagebox
 from elementViewer import *
 from settings import *
 
+
+import tkinter
+print(tkinter.TkVersion)
+
 #interface principal menu principal
 main = tk.Tk()
 main.title("TableMaster")
 main.geometry("800x800")
-main.resizable(False, False)
+
+
 
 #icon de la fenetre
 icon = tk.PhotoImage(file="img/icon.png")
@@ -18,6 +23,8 @@ main.iconphoto(True,icon)
 restoBlueprint = tk.Canvas(main, width=800, height=750)
 restoBlueprint.place(x=0, y=50)
 
+
+
 refresh_background_color(restoBlueprint)
 
 def test():
@@ -26,7 +33,7 @@ def test():
 
 SettingTopButton = TableMaster_ButtonOnTop(main, "gear.png", lambda: ShowSetting(restoBlueprint))
 EyeTopButton = TableMaster_ButtonOnTop(main, "eye.png", lambda: ShowElementViewer())
-LabelTopButton = TableMaster_ButtonOnTop(main, "label.png", lambda: test())
+#LabelTopButton = TableMaster_ButtonOnTop(main, "label.png", lambda: test())
 
 
 #ce qui est en bas c'est juste des exemples hors DB
@@ -45,7 +52,7 @@ robin4 = TableMaster_Table(main, restoBlueprint, 4, 3,100,600,4)
 db = tableMaster_dbConnexion()
 labelDataFromDb = db.retreaveTable("labels" ,True)
 
-for i in labelDataFromDb: #chargeDepuisLadb
+for i in labelDataFromDb: #chargeDepuisLa db
     name = "label_" + str(i[0])
     name = TableMaster_Label(main, str(i[1]), i[2], i[3])
 
