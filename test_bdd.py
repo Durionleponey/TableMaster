@@ -2,16 +2,29 @@ import sqlite3 as sql
 
 DATABASE = "TableMaster.db"
 
+
 def fetch_data(query):
     """Exécute une requête SQL et retourne les résultats."""
+
     try:
+        # Établit une connexion à la base de données en utilisant 'with' pour une gestion automatique de la connexion
         with sql.connect(DATABASE) as con:
+            # Crée un curseur qui permet d'interagir avec la base de données
             cur = con.cursor()
+
+            # Exécute la requête SQL passée en paramètre
             cur.execute(query)
+
+            # Récupère toutes les lignes résultantes de la requête exécutée
             return cur.fetchall()
+
     except sql.Error as e:
+        # En cas d'erreur SQL, affiche un message d'erreur dans le terminal
         print(f"Erreur lors de l'exécution de la requête : {e}")
+
+        # Si une erreur survient, retourne une liste vide
         return []
+
 
 def display_all_data():
     """Affiche les données des trois tables."""
@@ -40,7 +53,7 @@ def display_all_data():
     # Commandes
     print("\n--- Commandes ---")
     commandes = fetch_data("SELECT platId, labelplat, priceplat FROM Commandes") #requête sql
-    for cmd in commandes: #Boucle pour afficher 
+    for cmd in commandes: #Boucle pour afficher
         print(f"Plat ID: {cmd[0]}, Nom: {cmd[1]}, Prix: {cmd[2]} €")
 
 if __name__ == "__main__":
