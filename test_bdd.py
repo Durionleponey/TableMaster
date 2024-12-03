@@ -17,8 +17,8 @@ def display_all_data():
     """Affiche les données des trois tables."""
     # Tables
     print("\n--- Tables ---")
-    tables = fetch_data("SELECT idtable, statut FROM tables")
-    for table in tables:
+    tables = fetch_data("SELECT idtable, statut FROM tables") #requête sql
+    for table in tables: #Fait une boucle afin de prendre toutes les infos
         print(f"Table ID: {table[0]}, Statut: {'Libre' if table[1] else 'Occupée'}")
 
     # Réservations
@@ -31,16 +31,16 @@ def display_all_data():
             Reservations.commande, tables.statut
         FROM Reservations
         JOIN tables ON Reservations.idtable = tables.idtable
-    """)
-    for res in reservations:
+    """) #requête sql
+    for res in reservations: #Boucle afin d'afficher
         print(f"Réservation ID: {res[0]}, Table ID: {res[1]}, Nom: {res[2]}, Prénom: {res[3]}, "
               f"Personnes: {res[4]}, Téléphone: {res[5]}, Heure d'arrivée: {res[6]}, "
               f"Commande: {res[7]}, Statut: {'Libre' if res[8] else 'Occupée'}")
 
     # Commandes
     print("\n--- Commandes ---")
-    commandes = fetch_data("SELECT platId, labelplat, priceplat FROM Commandes")
-    for cmd in commandes:
+    commandes = fetch_data("SELECT platId, labelplat, priceplat FROM Commandes") #requête sql
+    for cmd in commandes: #Boucle pour afficher 
         print(f"Plat ID: {cmd[0]}, Nom: {cmd[1]}, Prix: {cmd[2]} €")
 
 if __name__ == "__main__":
