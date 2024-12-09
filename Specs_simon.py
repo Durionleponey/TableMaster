@@ -22,7 +22,7 @@ class Client:
         self.prenom = prenom
         self.numeroTelephone = numeroTelephone
 
-    def creerReserv(self, reservation) -> None:
+    def creerReserv(self, reservation):
         """
         Permet de créer une réservation pour le client.
 
@@ -34,7 +34,7 @@ class Client:
         """
         self.reservation = reservation
 
-    def supprimerReserv(self) -> None:
+    def supprimerReserv(self):
         """
         Permet de supprimer une réservation existante.
 
@@ -43,7 +43,7 @@ class Client:
         """
         self.reservation = None
 
-    def modifierReserv(self, nouvelle_reservation) -> None:
+    def modifierReserv(self, nouvelle_reservation):
         """
         Permet de modifier une réservation existante.
 
@@ -79,7 +79,7 @@ class Reservation:
         self.heure = heure
         self.statut = statut
 
-    def confirmer(self) -> None:
+    def confirmer(self):
         """
         Confirme la réservation.
 
@@ -88,7 +88,7 @@ class Reservation:
         """
         self.statut = "réservée"
 
-    def annuler(self) -> None:
+    def annuler(self):
         """
         Annule la réservation.
 
@@ -97,7 +97,7 @@ class Reservation:
         """
         self.statut = "annulée"
 
-    def modifier(self, date: date = None, nbrePersonne: int = None, heure: int = None, statut: str = None) -> None:
+    def modifier(self, date: date, nbrePersonne: int, heure: int, statut: str):
         """
         Modifie les détails de la réservation.
 
