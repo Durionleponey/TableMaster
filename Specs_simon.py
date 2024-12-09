@@ -1,131 +1,120 @@
-class client:
-    def __init__(self, lname, fname, phone_number):
-        """
-            Retourne une chaine de caractère dans un fichier JSON (DATABASE).
-
-                    Parameters:
-                        lname (str) : Une chaine de caractère avec le nom de famille du client
-                        fname (str) : Une chaine de caractère avec le prénom du client
-                        phone_number (str) : une chaine de caractère avec le numéro du client
-                    Returns:
-                         Le compte du client au format dictionnaire pour l'instant au format JSON ==> (DATABASE)
-        """
-        self.lname = lname
-        self.fname = fname
-        self.phone_number = phone_number
-
-    def create_client(self, lname: str, fname: str, phone_number: str) -> str:
-        """
-        Retourne la création du client sur un fichier JSON
-
-        Parameters:
-                        lname (str) : Une chaine de caractère avec le nom de famille du client
-                        fname (str) : Une chaine de caractère avec le prénom du client
-                        phone_number (str) : une chaine de caractère avec le numéro du client
-                    Returns:
-                        Le compte du client au format dictionnaire pour l'instant au format JSON ==> (DATABASE)
-        """
-        pass
-        user_account = {
-            lname: "",
-            fname: "",
-            phone_number: ""
-        }
-        return user_account
-
-    def remove_reserv(self, lname: str, fname: str, phone_number: str) -> str:
-        """
-        Permet la suppression du client
-        """
-        pass
-
-    def modify_client(self, lname: str, fname: str, phone_number: str) -> str:
-        """
-        Permet la modification d'informations du client sur un fichier JSON
-
-            Parameters:
-                        lname (str) : Une chaine de caractère avec le nom de famille du client
-                        fname (str) : Une chaine de caractère avec le prénom du client
-                        phone_number (str) : une chaine de caractère avec le numéro du client
-            Returns:
-                un dictionnaire contenant les informations modifiées.
-        """
-        pass
-        user_modify = {
-            lname: "",
-            fname: "",
-            phone_number: ""
-        }
-        return user_modify
+from datetime import date
 
 
-class reservation:
-    def __init__(self, date: date, nbrepeople: int, hours: int, statut: bool, client: dict):
+class Client:
+    """
+    Classe représentant un client.
+    """
+
+    def __init__(self, nom: str, prenom: str, numeroTelephone: int):
+        """
+        Initialise un client.
+
+        PRE:
+            nom (str): Le nom de famille du client.
+            prenom (str): Le prénom du client.
+            numeroTelephone (int): Le numéro de téléphone du client.
+
+        POST:
+            Une instance de Client est créée avec les attributs.
+        """
+        self.nom = nom
+        self.prenom = prenom
+        self.numeroTelephone = numeroTelephone
+
+    def creerReserv(self, reservation):
+        """
+        Permet de créer une réservation pour le client.
+
+        PRE:
+            reservation (Reservation): Une instance de la classe Reservation associée à ce client.
+
+        POST:
+            La réservation est associée au client.
+        """
+        self.reservation = reservation
+
+    def supprimerReserv(self):
+        """
+        Permet de supprimer une réservation existante.
+
+        POST:
+            La réservation associée au client est supprimée.
+        """
+        self.reservation = None
+
+    def modifierReserv(self, nouvelle_reservation):
+        """
+        Permet de modifier une réservation existante.
+
+        PRE:
+            nouvelle_reservation (Reservation): Une nouvelle instance de réservation pour remplacer l'existante.
+
+        POST:
+            La réservation associée au client est mise à jour.
+        """
+        self.reservation = nouvelle_reservation
+
+
+class Reservation:
+    """
+    Classe représentant une réservation.
+    """
+
+    def __init__(self, date: date, nbrePersonne: int, heure: int, statut: str):
+        """
+        Initialise une réservation.
+
+        PRE:
+            date (date): La date de la réservation.
+            nbrePersonne (int): Le nombre de personnes pour la réservation.
+            heure (int): L'heure de la réservation.
+            statut (str): Le statut de la réservation ("confirmée", "annulée", "supprimé").
+
+        POST:
+            Une instance de Reservation est créée avec les attributs spécifiés.
+        """
         self.date = date
-        self.nbrepeople = nbrepeople
-        self.hours = hours
+        self.nbrePersonne = nbrePersonne
+        self.heure = heure
         self.statut = statut
-        self.client = client
+
+    def confirmer(self):
         """
-        Permet la réservation d'une table du restaurant
-        
-            Parameters:
-                date (date) : Est la date à laquelle le client réserve la table
-                nbrepeople (int) : Nombre de personnes de la table
-                hours (int) : l'heure à laquelle la table sera réservée
-                statut (bool ) : Si la table est disponible ou non 
-                client (dict) : dictionnaire avec les informations du client
-                
-            Returns:
-                un fichier Json (par la suite ==> DATABASE) au format disctionnaire avec les informations données et changement du statut en false 
+        Confirme la réservation.
+
+        POST:
+            Le statut de la réservation est mis à jour à "réservée".
         """
+        self.statut = "réservée"
 
-    def confirm(self, date: date, nbrepeople: int, hours: int, statut: bool, client: dict):
-        pass
+    def annuler(self):
         """
-        Permet la confirmation de la réservation d'une table 
-         
-        Parameters:
-                date (date) : Est la date à laquelle le client réserve la table
-                nbrepeople (int) : Nombre de personnes de la table
-                hours (int) : l'heure à laquelle la table sera réservée
-                statut (bool ) : Si la table est disponible ou non 
-                client (dict) : dictionnaire avec les informations du client
-                
-            Returns:
-                un fichier Json (par la suite ==> DATABASE) au format disctionnaire avec les informations données et changement du statut en False
+        Annule la réservation.
+
+        POST:
+            Le statut de la réservation est mis à jour à "annulée".
         """
+        self.statut = "annulée"
 
-    def cancel(self, date: date, nbrepeople: int, hours: int, statut: bool, client: dict):
-        pass
+    def modifier(self, date: date, nbrePersonne: int, heure: int, statut: str):
+        """
+        Modifie les détails de la réservation.
 
-    """
-    Permet l'annulation d'une table 
-    
-         Parameters:
-                date (date) : Est la date à laquelle le client réserve la table
-                nbrepeople (int) : Nombre de personnes de la table
-                hours (int) : l'heure à laquelle la table sera réservée
-                statut (bool ) : Si la table est disponible ou non 
-                client (dict) : dictionnaire avec les informations du client
-                
-        Returns:
-                Le fichier JSON (par la suite ==> DATABASE) mis à jour avec la suppression de la table et le changement du statut en True
-    """
+        PRE:
+            date (date, optionnel): La nouvelle date de la réservation.
+            nbrePersonne (int, optionnel): Le nouveau nombre de personnes.
+            heure (int, optionnel): La nouvelle heure de réservation.
+            statut (str, optionnel): Le nouveau statut de la réservation.
 
-    def modify(self, date: date, nbrepeople: int, hours: int, statut: bool, client: dict):
-        pass
-
-    """
-    Permet la modification d'informations de la réservation 
-    
-    Parameters:
-                date (date) : Est la date à laquelle le client réserve la table
-                nbrepeople (int) : Nombre de personnes de la table
-                hours (int) : l'heure à laquelle la table sera réservée
-                statut (bool ) : Si la table est disponible ou non 
-                client (dict) : dictionnaire avec les informations du client
-                
-            Returns:
-                un fichier Json (par la suite ==> DATABASE) au format disctionnaire avec les informations données et changement du statut en False
-    """
+        POST:
+            Les attributs de la réservation sont mis à jour en fonction des paramètres fournis.
+        """
+        if date:
+            self.date = date
+        if nbrePersonne:
+            self.nbrePersonne = nbrePersonne
+        if heure:
+            self.heure = heure
+        if statut:
+            self.statut = statut
