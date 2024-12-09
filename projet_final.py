@@ -12,7 +12,7 @@ def fetch_data(query):
         with sql.connect(DATABASE) as con:
             # Crée un curseur qui permet d'interagir avec la base de données
             cur = con.cursor()
-            
+
             con.text_factory = lambda x: str(x, "utf-8")
 
             # Exécute la requête SQL passée en paramètre
@@ -27,11 +27,12 @@ def fetch_data(query):
 
         # Si une erreur survient, retourne une liste vide
         return []
-    
+
+
 def watch_table():
     """Affiche les valeurs des tables"""
-    #Tables
-    table = fetch_data("Select * from tables") #requête sql
+    # Tables
+    table = fetch_data("Select * from tables")  # requête sql
     for i in table:
         if i[2] == 1:
             dispo = "disponible"
@@ -40,29 +41,34 @@ def watch_table():
             print(f"La table numéro : {i[1]} n'est pas disponible ! ")
     return "\n"
 
+
 def watch_reservation():
     """Affiche les réservations en cour"""
     print("\n-----Réservation en cour-----")
-    reserv = fetch_data(" SELECT T.numero, T.disponible, R.id, R.date, R.heure, R.client_id, R.table_id,C.prenom, C.nom, C.telephone, C.id, R.nombre_personne "
-                        " FROM tables AS T "
-                        " JOIN reservations AS R on T.id = R.table_id "
-                        " JOIN clients AS C on C.id = R.client_id ")
+    reserv = fetch_data(
+        " SELECT T.numero, T.disponible, R.id, R.date, R.heure, R.client_id, R.table_id,C.prenom, C.nom, C.telephone, C.id, R.nombre_personne "
+        " FROM tables AS T "
+        " JOIN reservations AS R on T.id = R.table_id "
+        " JOIN clients AS C on C.id = R.client_id ")
     ecrit = ""
     for i in reserv:
         if i[1] == 0:
-            ecrit += (f"La réservation : {i[2]}. le numéro de la table est : {i[0]} le : {i[3]} à {i[4]} par {i[7]} {i[8]} son numéro de téléphone est : {i[9]} pour {i[11]} personnes\n")
+            ecrit += (
+                f"La réservation : {i[2]}. le numéro de la table est : {i[0]} le : {i[3]} à {i[4]} par {i[7]} {i[8]} son numéro de téléphone est : {i[9]} pour {i[11]} personnes\n")
         else:
             return ("Pas de réservation en cour")
     return ecrit
-            
+
+
 def watch_reser_date():
     """Affiche les réservations en cours en fonction de la date et de l'heure"""
     print("----Affichage en fonction de l'heure----")
     ask_date = input("Entrer la date souhaitée : ")
-    reserv = fetch_data(" SELECT T.numero, T.disponible, R.id, R.date, R.heure, R.client_id, R.table_id, C.nom, C.telephone, C.id "
-                        " FROM tables AS T "
-                        " JOIN reservations AS R on T.id = R.table_id "
-                        " JOIN clients AS C on C.id = R.client_id ")
+    reserv = fetch_data(
+        " SELECT T.numero, T.disponible, R.id, R.date, R.heure, R.client_id, R.table_id, C.nom, C.telephone, C.id "
+        " FROM tables AS T "
+        " JOIN reservations AS R on T.id = R.table_id "
+        " JOIN clients AS C on C.id = R.client_id ")
     for i in reserv:
         if ask_date == i[2]:
             print(f"le numéro de la table est : {i[0]} à : {i[3]} par {i[6]} son numéro de téléphone est : {i[7]}")
@@ -98,12 +104,13 @@ def add_reservation():
     # Insérer la réservation dans la base de données
     cur.execute(
         "INSERT INTO reservations (client_id, table_id, nombre_personne, heure, date) VALUES (?, ?, ?, ?, ?)",
-            (client_id, num_table, nombre_personne, heure, date)
-            )
+        (client_id, num_table, nombre_personne, heure, date)
+    )
     cur.execute("UPDATE tables set disponible = 0 WHERE id = ?", (num_table,))
     print("Réservation ajoutée avec succès.")
     conn.commit()
     conn.close()
+
 
 def add_client():
     conn = sql.connect("restaurant.db")
@@ -111,9 +118,12 @@ def add_client():
     prenom = input("Prénom: ")
     nom = input('Nom: ')
     num_telephone = input('Téléphone: ')
-    cursor.execute("INSERT OR IGNORE INTO clients (prenom, nom, telephone) VALUES (?, ?, ?)", (prenom, nom, num_telephone))
+    cursor.execute("INSERT OR IGNORE INTO clients (prenom, nom, telephone) VALUES (?, ?, ?)",
+                   (prenom, nom, num_telephone))
+    print("Client bien ajouter !")
     conn.commit()
     conn.close()
+
 
 def delete_reservation():
     """Supprimer réservation"""
@@ -131,18 +141,27 @@ def delete_reservation():
 
 
 def delete_client():
-    """Supprimer un client"""
+    """Supprimer un client avec gestion des réservations associées"""
     conn = sql.connect("restaurant.db")
     cur = conn.cursor()
-    supp = watch_client()
-    print(supp)
-    id_supp = int(input("Entrer l'id du client que vous voulez supprimer : "))
-    id_reserv = cur.execute("SELECT id FROM reservations WHERE client_id = ?", (id_supp,)).fetchone()[0]
-    id_table = cur.execute("SELECT table_id FROM reservations WHERE id = ?", (id_reserv,)).fetchone()[0]
-    cur.execute("DELETE FROM reservations WHERE id = ?", (id_reserv,))
-    # Supprimer le client de la table clients
+
+    print("----- Liste des clients -----")
+    print(watch_client())
+
+    id_supp = int(input("Entrez l'ID du client que vous voulez supprimer : "))
+
+    verif_reserv = cur.execute("SELECT id FROM reservations WHERE client_id = ?", (id_supp,)).fetchall()
+
+    if verif_reserv:
+        print(f"Le client avec l'ID {id_supp} a des réservations. Suppression en cours...")
+        for reserv in verif_reserv:
+            id_reserv = reserv[0]
+            id_table = cur.execute("SELECT table_id FROM reservations WHERE id = ?", (id_reserv,)).fetchone()[0]
+            cur.execute("DELETE FROM reservations WHERE id = ?", (id_reserv,))
+            cur.execute("UPDATE tables SET disponible = 1 WHERE id = ?", (id_table,))
+
+    # Supprimer le client
     cur.execute("DELETE FROM clients WHERE id = ?", (id_supp,))
-    cur.execute("Update tables set disponible = 1 where id = ?", (id_table,))
     conn.commit()
     conn.close()
     print(f"Le client avec l'ID {id_supp} a bien été supprimé.")
@@ -159,12 +178,14 @@ def modify_reservation():
     nouvelle_heure = input("Entrez la nouvelle heure (format HH:MM) : ")
     nouveau_nombre_personne = input("Entrez le nombre de personnes : ")
 
-    cur.execute("UPDATE reservations SET date = ?, heure = ?, nombre_personne = ? WHERE id = ?",(nouvelle_date, nouvelle_heure, nouveau_nombre_personne, modif_reserv))
+    cur.execute("UPDATE reservations SET date = ?, heure = ?, nombre_personne = ? WHERE id = ?",
+                (nouvelle_date, nouvelle_heure, nouveau_nombre_personne, modif_reserv))
     conn.commit()
 
     print(f"La réservation avec l'ID {modif_reserv} a été modifiée avec succès.")
     conn.commit()
     conn.close()
+
 
 def modif_client():
     """Modifier une client"""
@@ -176,10 +197,25 @@ def modif_client():
     nouveau_prenom = input("Entrez le nouvelle prenom : ")
     nouveau_nom = input("Entrez le nouvelle nom : ")
     nouveau_telephone = input("Entrez le telephone : ")
-    cur.execute("UPDATE clients SET prenom = ?, nom = ?, telephone = ? WHERE id = ?", (nouveau_prenom, nouveau_nom, nouveau_telephone, modif_id_client))
+    cur.execute("UPDATE clients SET prenom = ?, nom = ?, telephone = ? WHERE id = ?",
+                (nouveau_prenom, nouveau_nom, nouveau_telephone, modif_id_client))
     print(f"Ancienne version : {affichage}")
     print(f"Version modifier : {nouveau_prenom}, {nouveau_nom}, {nouveau_telephone}")
     conn.commit()
     conn.close()
 
+def add_table():
+    conn = sql.connect("restaurant.db")
+    cur = conn.cursor()
+    table_exi = fetch_data("Select * from tables")
+    for i in table_exi:
+        print(f"Le numéro : {i[1]}, est {i[2]} Si 0 : occupé, si 1 : disponible")
+    numéro_table = int(input("Entrer le nombre de la table : "))
+    disponible_table = int(input("Entrer le nombre de la table (0 : occupé, si 1 : disponible): "))
+    cur.execute("Insert into tables(numero, disponible) values (?, ?)", (numéro_table, disponible_table))
+    print("La table à été ajoutée !")
+    conn.commit()
+    conn.close()
+
 if __name__ == "__main__":
+    delete_client()
