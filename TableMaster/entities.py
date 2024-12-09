@@ -13,10 +13,13 @@ import platform#pour la détection de l'os
 
 
 class TableMaster_Label:
+    instances = []
     def __init__(self, location, txt="new label", posiX=500, posiY=500, color="black", width=16, pady=0):
         self.posiX = posiX
         self.posiY = posiY
         #creation of entity
+
+        TableMaster_Label.instances.append(self)
 
 
         # Vérifie si l'OS est macOS et si le mode sombre est activé
@@ -35,6 +38,11 @@ class TableMaster_Label:
         self.label.place_forget()
     def show(self):
         self.label.place(x=self.posiX, y=self.posiY)
+
+    @classmethod
+    def get_all_instances(cls):
+
+        return cls.instances
 
 
 class TableMaster_RoomDrawer:

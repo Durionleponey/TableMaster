@@ -1,6 +1,7 @@
 from tkinter import messagebox
 from elementViewer import *
 from settings import *
+from booking import *
 
 
 import tkinter
@@ -34,6 +35,8 @@ def test():
 SettingTopButton = TableMaster_ButtonOnTop(main, "gear.png", lambda: ShowSetting(restoBlueprint))
 EyeTopButton = TableMaster_ButtonOnTop(main, "eye.png", lambda: ShowElementViewer())
 LabelTopButton = TableMaster_ButtonOnTop(main, "label.png", lambda: test())
+BookingTopButton = TableMaster_ButtonOnTop(main, "book.png", lambda: ShowBoking())
+
 
 
 #ce qui est en bas c'est juste des exemples hors DB
