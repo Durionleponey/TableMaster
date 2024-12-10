@@ -398,10 +398,43 @@ def watch_order():
     for i in order :
         print(f"Vous avez commandé : {i[3]} à {i[4]} en {i[1]} exemplaires !")
 
+
 def complete_order():
-    conn = sql.connect("restaurant.db")
-    cur = conn.cursor()
-    pass
+        # Connexion à la base de données
+        conn = sql.connect("restaurant.db")
+        cur = conn.cursor()
+
+        # Simulation de `watch_reser_date()`
+        date_response = watch_reser_date()  # Supposons que cette fonction existe
+        print(date_response)
+
+        # Demander le numéro de réservation
+        ask_reserv = int(input('Entrer le numéro de la réservation : '))
+
+        # Récupération des commandes pour la réservation donnée
+        cur.execute("""
+            SELECT C.plat_id, C.quantite, M.id, M.nom, M.prix
+            FROM commandes AS C 
+            JOIN menu AS M ON C.plat_id = M.id
+            WHERE reserv_id = ?
+        """, (ask_reserv,))
+
+        orders = cur.fetchall()
+        if not orders:
+            print("Aucune commande trouvée pour cette réservation.")
+            return
+
+        # Calcul du total
+        total = 0
+        for order in orders:
+            quantite = order[1]
+            prix = order[4]
+            total += quantite * prix
+            print(f"Plat : {order[3]}, Quantité : {quantite}, Prix unitaire : {prix}€, Total : {quantite * prix}€")
+
+        print(f"\nMontant total de la commande : {total}€")
+
+
 
 if __name__ == "__main__":
-    watch_order()
+    complete_order()
