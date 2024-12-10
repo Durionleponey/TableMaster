@@ -151,6 +151,7 @@ def delete_reservation():
     print(supp)
     id_supp = int(input("Entrer l'id de la réservation que vous voulez supprimer : "))
     cur.execute("DELETE FROM reservations WHERE id = ?", (id_supp,))
+    cur.execute("DELETE from commandes where reserv_id = ?", (id_supp,))
     print(f'La réservation à bien été supprimée : {id_supp}')
     conn.commit()
     conn.close()
@@ -312,9 +313,6 @@ def delete_plat():
     conn.close()
 
 
-
-
-
 def add_order():
     """Ajouter une commande pour une réservation"""
     conn = sql.connect("restaurant.db")
@@ -394,7 +392,11 @@ def watch_order():
     date_response = watch_reser_date()
     print(date_response)
     ask_reserv = int(input('Entrer le numéro de la réservation : '))
-
+    order = cur.execute("Select C.plat_id, C.quantite, M.id, M.nom, M.prix "
+                        "from commandes as C JOIN menu as M on C.plat_id = M.id "
+                        "Where reserv_id = ?", (ask_reserv,))
+    for i in order :
+        print(f"Vous avez commandé : {i[3]} à {i[4]} en {i[1]} exemplaires !")
 
 def complete_order():
     conn = sql.connect("restaurant.db")
