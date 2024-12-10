@@ -382,7 +382,20 @@ def add_order():
 def modif_order():
     conn = sql.connect("restaurant.db")
     cur = conn.cursor()
-    pass
+    order = watch_order()
+    print(order)
+    id_order = int(input('Entrez l id de la commande que vous voulez modifier: '))
+    plat = watch_menu()
+    print(plat)
+    nouv_plat = int(input('Entrez l id du nouveau plat: '))
+    nouv_quant = int(input('Entrez la nouvelle quantité: '))
+    cur.execute("UPDATE commandes set plat_id = ?, quantite = ? Where id = ?", (nouv_plat, nouv_quant, id_order))
+    print(f"Version de la commande modifier : {nouv_plat}, {nouv_quant}")
+    conn.commit()
+    conn.close()
+
+
+
 
 def watch_order():
     """Voir les commandes d'une table pour une date donnée"""
@@ -392,11 +405,11 @@ def watch_order():
     date_response = watch_reser_date()
     print(date_response)
     ask_reserv = int(input('Entrer le numéro de la réservation : '))
-    order = cur.execute("Select C.plat_id, C.quantite, M.id, M.nom, M.prix "
+    order = cur.execute("Select C.plat_id, C.quantite, M.id, M.nom, M.prix, C.id "
                         "from commandes as C JOIN menu as M on C.plat_id = M.id "
                         "Where reserv_id = ?", (ask_reserv,))
     for i in order :
-        print(f"Vous avez commandé : {i[3]} à {i[4]} en {i[1]} exemplaires !")
+        print(f"(ID {i[5]}) Vous avez commandé : {i[3]} à {i[4]} en {i[1]} exemplaires !")
 
 
 def complete_order():
@@ -437,4 +450,4 @@ def complete_order():
 
 
 if __name__ == "__main__":
-    complete_order()
+    modif_order()
