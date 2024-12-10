@@ -46,18 +46,37 @@ class TableMaster_Label:
 
 
 class TableMaster_RoomDrawer:
+    instance = []
     def __init__(self, location, target, nameOfTheRoom, color, *XYpositions):#target is the name of the targeted canvas --> try restoBlueprint
         self.nameOfTheRoom = nameOfTheRoom
-
+        self.target = target
         self.draw = target.create_line(*XYpositions, fill=color, width=3)
         self.label = TableMaster_Label(location, nameOfTheRoom, XYpositions[0], XYpositions[1])
+        self.instance.append(self)
+
+    def hide(self):
+        if self.draw:
+            self.target.itemconfigure(self.draw, state="hidden")
+
+    def show(self):
+        if self.draw:
+            self.target.itemconfigure(self.draw, state="normal")
+
+    @classmethod
+    def get_all_instances(cls):
+        return cls.instance
 
 class TableMaster_Table:
+    instances = []
     def __init__(self,location, target, tableId, maxCapacity,posiX,posiY,tableType):#table type 1 2 3 4
         self.tableId = tableId
         self.maxCapacity = maxCapacity
+        self.target = target
 
         self.label = TableMaster_Label(location, "Table n°: " + str(tableId) + " Chaises :" + str(maxCapacity), posiX, posiY, "black", 10)
+
+        self.posiX = posiX
+        self.posiY = posiY
 
         if tableType == 1:
             self.canvasId = target.create_oval(posiX-25, posiY-25, posiX+25, posiY+25, fill="green", outline="black", width=2)
@@ -70,6 +89,22 @@ class TableMaster_Table:
 
         if tableType == 4:
             self.canvasId = target.create_rectangle(posiX-25, posiY-75, posiX+25, posiY+75, fill="green", width=2)
+
+        TableMaster_Table.instances.append(self)
+
+    def hide(self):
+        if self.canvasId:
+            self.target.itemconfigure(self.canvasId, state="hidden")
+
+    def show(self):
+        if self.canvasId:
+            self.target.itemconfigure(self.canvasId, state="normal")
+
+
+    @classmethod
+    def get_all_instances(cls):
+
+        return cls.instances
 
 
 
