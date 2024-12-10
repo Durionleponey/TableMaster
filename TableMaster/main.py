@@ -35,7 +35,7 @@ def test():
 
 SettingTopButton = TableMaster_ButtonOnTop(main, "gear.png", lambda: ShowSetting(restoBlueprint))
 EyeTopButton = TableMaster_ButtonOnTop(main, "eye.png", lambda: ShowElementViewer())
-LabelTopButton = TableMaster_ButtonOnTop(main, "label.png", lambda: ShowLabel())
+LabelTopButton = TableMaster_ButtonOnTop(main, "label.png", lambda: ShowLabel(main))
 BookingTopButton = TableMaster_ButtonOnTop(main, "book.png", lambda: ShowBoking())
 
 
@@ -58,7 +58,7 @@ labelDataFromDb = db.retreaveTable("labels" ,True)
 
 for i in labelDataFromDb: #chargeDepuisLa db
     name = "label_" + str(i[0])
-    name = TableMaster_Label(main, str(i[1]), i[2], i[3])
+    name = TableMaster_Label(main, str(i[1]), i[2], i[3], str(i[4]), i[5])
 
 
 

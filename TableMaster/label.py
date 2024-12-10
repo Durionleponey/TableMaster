@@ -1,9 +1,9 @@
-from tkinter import ttk
+from tkinter import ttk, messagebox
 
 from entities import *
 
 
-def ShowLabel():
+def ShowLabel(main):
     elemViewer_window = TableMaster_windowCreator("Modifier les labels", "300x300")
 
     # Label principal
@@ -39,10 +39,39 @@ def ShowLabel():
 
     def on_button_click():
         # Action du bouton : Affiche les valeurs dans la console
-        print("Texte du label :", entry_text.get())
-        print("Position X :", entry_x.get())
-        print("Position Y :", entry_y.get())
-        print("Taille :", entry_size.get())
+        try:
+            print("Texte du label :", entry_text.get())
+            print("Position X :", entry_x.get())
+            print("Position Y :", entry_y.get())
+            print("Taille :", entry_size.get())
+            TableMaster_Label(main, str(entry_text.get()), int(entry_x.get()), int(entry_y.get()),color=str(color_combobox.get()), width=int(entry_size.get()))
+
+        except:
+            messagebox.showerror(
+                title="Erreur",
+                message="Une ou plusieurs valeurs sont incorrectes.\nVeuillez les vérifier.",
+            )
+            return -1
+
+        updateLabel = tableMaster_dbConnexion()
+        query = f"""
+        INSERT INTO labels (labels_txt, labels_X, labels_Y, labels_Color, labels_Width)
+        VALUES ('{entry_text.get()}', {entry_x.get()}, {entry_y.get()}, '{color_combobox.get()}', {entry_size.get()});
+        """
+        updateLabel.rowSQLrequest(query, printSQL=True)
+        updateLabel.close()
+
+        #name = "label_" + str(entry_text.get())
+        entry_text.delete(0, tk.END)
+        entry_x.delete(0, tk.END)
+        entry_y.delete(0, tk.END)
+        entry_size.delete(0, tk.END)
+
+        messagebox.showinfo(
+            title="Succés!",
+            message="Le label à bien été ajouté avec succés !",
+        )
+
 
     button = tk.Button(
         elemViewer_window.getContext(),
