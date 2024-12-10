@@ -6,23 +6,23 @@ class Client:
     Classe représentant un client.
     """
 
-    def __init__(self, nom: str, prenom: str, numeroTelephone: int):
+    def __init__(self, nom: str, prenom: str, numero_telephone: int):
         """
         Initialise un client.
 
         PRE:
             nom (str): Le nom de famille du client.
             prenom (str): Le prénom du client.
-            numeroTelephone (int): Le numéro de téléphone du client.
+            numero_telephone (int): Le numéro de téléphone du client.
 
         POST:
             Une instance de Client est créée avec les attributs.
         """
         self.nom = nom
         self.prenom = prenom
-        self.numeroTelephone = numeroTelephone
+        self.numero_telephone = numeroTelephone
 
-    def creerReserv(self, reservation):
+    def creer_reserv(self, reservation):
         """
         Permet de créer une réservation pour le client.
 
@@ -34,16 +34,18 @@ class Client:
         """
         self.reservation = reservation
 
-    def supprimerReserv(self):
+    def supprimer_reserv(self):
         """
         Permet de supprimer une réservation existante.
 
         POST:
             La réservation associée au client est supprimée.
+        RAISES : 
+            Lance une erreur si il n'y a pas de réservation. 
         """
         self.reservation = None
 
-    def modifierReserv(self, nouvelle_reservation):
+    def modifier_reserv(self, nouvelle_reservation):
         """
         Permet de modifier une réservation existante.
 
@@ -52,6 +54,9 @@ class Client:
 
         POST:
             La réservation associée au client est mise à jour.
+
+        Raises ; 
+            Lance une erreur s'il n'y a pas de réservation
         """
         self.reservation = nouvelle_reservation
 
@@ -61,21 +66,21 @@ class Reservation:
     Classe représentant une réservation.
     """
 
-    def __init__(self, date: date, nbrePersonne: int, heure: int, statut: str):
+    def __init__(self, date: date, nbre_personne: int, heure: int, statut: str):
         """
         Initialise une réservation.
 
         PRE:
             date (date): La date de la réservation.
-            nbrePersonne (int): Le nombre de personnes pour la réservation.
-            heure (int): L'heure de la réservation.
-            statut (str): Le statut de la réservation ("confirmée", "annulée", "supprimé").
+            nbre_personne (int): un nombre entier.
+            heure (int): un nombre entier.
+            statut (str): une chaine de caractère : ("confirmée", "annulée", "supprimé").
 
         POST:
             Une instance de Reservation est créée avec les attributs spécifiés.
         """
         self.date = date
-        self.nbrePersonne = nbrePersonne
+        self.nbre_personne = nbre_personne
         self.heure = heure
         self.statut = statut
 
@@ -85,6 +90,8 @@ class Reservation:
 
         POST:
             Le statut de la réservation est mis à jour à "réservée".
+        Raises : 
+            Lance une erreur si aucune réservation n'est faite.
         """
         self.statut = "réservée"
 
@@ -94,18 +101,20 @@ class Reservation:
 
         POST:
             Le statut de la réservation est mis à jour à "annulée".
+        Raises : 
+            Lance une erreur si aucune réservation n'est faite.
         """
         self.statut = "annulée"
 
-    def modifier(self, date: date, nbrePersonne: int, heure: int, statut: str):
+    def modifier(self, date: date, nbre_personne: int, heure: int, statut: str):
         """
         Modifie les détails de la réservation.
 
         PRE:
-            date (date, optionnel): La nouvelle date de la réservation.
-            nbrePersonne (int, optionnel): Le nouveau nombre de personnes.
-            heure (int, optionnel): La nouvelle heure de réservation.
-            statut (str, optionnel): Le nouveau statut de la réservation.
+            date (date): Date pour modifier une réservation.
+            nbre_personne (int): un entier positif.
+            heure (int): un entier positif.
+            statut (str): chaine de caractère.
 
         POST:
             Les attributs de la réservation sont mis à jour en fonction des paramètres fournis.
@@ -113,7 +122,7 @@ class Reservation:
         if date:
             self.date = date
         if nbrePersonne:
-            self.nbrePersonne = nbrePersonne
+            self.nbre_personne = nbre_personne
         if heure:
             self.heure = heure
         if statut:
