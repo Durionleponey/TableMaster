@@ -70,7 +70,7 @@ def ShowElementViewer():
     checkbox2 = tk.Checkbutton(elemViewer_window.getContext(), text="Table", variable=table_var, command=lambda : onChangeElementViewer2(table_var.get()))
     checkbox2.pack(pady=30)
 
-    wall_var = tk.IntVar()
+    wall_var = tk.IntVar(value=1)
     checkbox3 = tk.Checkbutton(elemViewer_window.getContext(), text="Mur", variable=wall_var, command=lambda : onChangeElementViewer3(wall_var.get()))
     checkbox3.pack(pady=30)
 
