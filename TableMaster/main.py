@@ -1,75 +1,121 @@
+import sqlite3
 from tkinter import messagebox
-from elementViewer import *
-from settings import *
-from booking import *
-from label import *
 
 
-import tkinter
-print(tkinter.TkVersion)
+class Client:
+    def __init__(self, prenom,  nom, telephone):
+        self.prenom = prenom
+        self.nom = nom
+        self.telephone = telephone
 
-#interface principal menu principal
-main = tk.Tk()
-main.title("TableMaster")
-main.geometry("800x800")
+    def __str__(self):
+        return f"Client: {self.prenom} {self.nom}, Téléphone: {self.telephone}"
 
-
-
-#icon de la fenetre
-icon = tk.PhotoImage(file="img/icon.png")
-main.iconphoto(True,icon)
-
-
-#working area for the map of the restaurant
-
-restoBlueprint = tk.Canvas(main, width=800, height=750)
-restoBlueprint.place(x=0, y=50)
+class Reservation:
+    def __init__(self, client, nombre_personnes, heure):
+        self.client = client
+        self.nombre_personnes = nombre_personnes
+        self.heure = heure
 
 
+    def __str__(self):
+        return f"Réservation pour {self.client.prenom} {self.client.nom} le {self.heure} pour {self.nombre_personnes} personnes."
 
-refresh_background_color(restoBlueprint)
+class Table:
+    def __init__(self, numero_table, nombre_places):
+        self.numero_table = numero_table
+        self.nombre_places = nombre_places
 
-def test():
-    messagebox.showinfo("hello")
+    def __str__(self):
+        return f"Table: {self.numero_table} possède {self.nombre_places} places."
+class Plat:
+    def __init__(self, nom, prix):
+        self.nom = nom
+        self.prix = prix
+
+    def __str__(self):
+        return f"{self.nom} : {self.prix}€"
+
+class Menu:
+    def __init__(self):
+        self.plats = []
+
+    def ajouter_plat(self, plat):
+        self.plats.append(plat)
+
+    def afficher_menu(self):
+        print("Menu :")
+        for plat in self.plats:
+            print(f"- {plat}")
+
+class Commande:
+    def __init__(self, client):
+        self.client = client
+        self.plats_commandes = []
+
+    def ajouter_plat(self, plat):
+        self.plats_commandes.append(plat)
+
+    def calculer_total(self):
+        return sum(plat.prix for plat in self.plats_commandes)
+
+    def __str__(self):
+        plats = ", ".join(plat.nom for plat in self.plats_commandes)
+        return f"{plats}. Total: {self.calculer_total()}€ \n"
+
+class Restaurant:
+    def __init__(self, nom):
+        self.nom = nom
+        self.menu = Menu()
+        self.reservations = []
+        self.commandes = []
+
+    def ajouter_reservation(self, reservation):
+        self.reservations.append(reservation)
+
+    def ajouter_commande(self, commande):
+        self.commandes.append(commande)
+
+    def afficher_reservations(self):
+        print("Réservations :")
+        for reservation in self.reservations:
+            print(reservation)
+
+    def afficher_commandes(self):
+        print("Commandes :")
+        for commande in self.commandes:
+            print(commande)
 
 
-SettingTopButton = TableMaster_ButtonOnTop(main, "gear.png", lambda: ShowSetting(restoBlueprint))
-EyeTopButton = TableMaster_ButtonOnTop(main, "eye.png", lambda: ShowElementViewer())
-LabelTopButton = TableMaster_ButtonOnTop(main, "label.png", lambda: ShowLabel(main))
-BookingTopButton = TableMaster_ButtonOnTop(main, "book.png", lambda: ShowBoking())
 
+def mainLine():
 
+    # Créer un restaurant
+    mon_restaurant = Restaurant("Gaston Gourmet")
 
-#ce qui est en bas c'est juste des exemples hors DB
+    # Ajouter des plats au menu
+    plat1 = Plat("Spaghetti Bolognese", 12)
+    plat2 = Plat("Pizza Margherita", 10)
+    mon_restaurant.menu.ajouter_plat(plat1)
+    mon_restaurant.menu.ajouter_plat(plat2)
 
-mainRoom = TableMaster_RoomDrawer(main,restoBlueprint,"mainRoom","blue",60, 60, 50, 700, 450, 700, 450, 60, 60, 60)
-petitSalon = TableMaster_RoomDrawer(main,restoBlueprint,"Le petit salon privé","green",500, 300, 500, 650, 650, 650, 650, 500, 500, 300)
-bureauDirecteur = TableMaster_RoomDrawer(main,restoBlueprint, "Bureau du Directeur", "orange", 600, 150, 600, 350, 800, 350, 800, 150, 600, 150)
+    # Créer une table
+    table1 = Table(1, 5)
 
+    # Afficher le menu
+    mon_restaurant.menu.afficher_menu()
 
-robin = TableMaster_Table(main, restoBlueprint, 1, 3,300,100,1)
-robin2 = TableMaster_Table(main, restoBlueprint, 2, 3,600,100,2)
-robin3 = TableMaster_Table(main, restoBlueprint, 3, 3,600,600,3)
-robin4 = TableMaster_Table(main, restoBlueprint, 4, 3,100,600,4)
+    # Ajouter une réservation
+    client1 = Client("Tiago", "Carmo Silveirinha", "0483437772")
+    reservation1 = Reservation(client1, 2, "19:00")
+    mon_restaurant.ajouter_reservation(reservation1)
 
+    # Créer une commande
+    commande1 = Commande(client1)
+    commande1.ajouter_plat(plat1)
+    commande1.ajouter_plat(plat2)
+    mon_restaurant.ajouter_commande(commande1)
 
-db = tableMaster_dbConnexion()
-labelDataFromDb = db.retreaveTable("labels" ,True)
-
-for i in labelDataFromDb: #chargeDepuisLa db
-    name = "label_" + str(i[0])
-    name = TableMaster_Label(main, str(i[1]), i[2], i[3], str(i[4]), i[5])
-
-
-
-#labelSeulTest = TableMaster_Label(main, "Bonjour les amis!", 100, 300)
-#labelSeulTest = TableMaster_Label(main, "50-100", 50, 100)
-#labelSeulTest = TableMaster_Label(main, "400-50", 400, 50)
-#labelSeulTest = TableMaster_Label(main, "50-400", 50, 400)
-#labelSeulTest = TableMaster_Label(main, "50-750", 50, 750)
-
-
-
-main.mainloop()
-
-
+    # Afficher les réservations et les commandes
+    mon_restaurant.afficher_reservations()
+    mon_restaurant.afficher_commandes()
