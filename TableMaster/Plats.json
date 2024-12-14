@@ -1,0 +1,28 @@
+{
+  "Plats": [
+    { "Numéro": 1, "Nom": "Pâtes bolognaise" },
+    { "Numéro": 2, "Nom": "Ratatouille" },
+    { "Numéro": 3, "Nom": "Couscous" },
+    { "Numéro": 4, "Nom": "Lasagnes" },
+    { "Numéro": 5, "Nom": "Poulet curry" },
+    { "Numéro": 6, "Nom": "Burger maison" },
+    { "Numéro": 7, "Nom": "Pizza margherita" },
+    { "Numéro": 8, "Nom": "Tartiflette" },
+    { "Numéro": 9, "Nom": "Sushis" },
+    { "Numéro": 10, "Nom": "Paella" },
+    { "Numéro": 11, "Nom": "Chili con carne" },
+    { "Numéro": 12, "Nom": "Soupe pho" },
+    { "Numéro": 13, "Nom": "Quiche lorraine" },
+    { "Numéro": 14, "Nom": "Tacos" },
+    { "Numéro": 15, "Nom": "Boeuf bourguignon" },
+    { "Numéro": 16, "Nom": "Salade César" },
+    { "Numéro": 17, "Nom": "Gratin dauphinois" },
+    { "Numéro": 18, "Nom": "Filet mignon à la moutarde" },
+    { "Numéro": 19, "Nom": "Poulet rôti" },
+    { "Numéro": 20, "Nom": "Saumon teriyaki" },
+    { "Numéro": 21, "Nom": "Raviolis aux légumes" },
+    { "Numéro": 22, "Nom": "Pad thaï" },
+    { "Numéro": 23, "Nom": "Fish and chips" },
+    { "Numéro": 24, "Nom": "Curry d'agneau" }
+  ]
+}
