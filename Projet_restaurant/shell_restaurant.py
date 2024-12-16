@@ -1,7 +1,7 @@
 from restaurant import *
 
 def menu_principal():
-    database = DatabaseHandler("restaurant.db")
+    database = database_handler("restaurant.db")
     while True:
         print("\n--- Shell de Restaurant ---")
         print("1. Gestion des tables")
@@ -46,6 +46,7 @@ def gestion_tables(database):
             Table.ajouter_table(database, numero)
 
         elif choix == "3":
+            Table.afficher_tables(database)
             table_id = input("ID de la table à supprimer : ")
             Table.supprimer_table(database, table_id)
 
