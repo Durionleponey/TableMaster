@@ -70,8 +70,11 @@ class Table:
 
     @staticmethod
     def ajouter_table(database, numero):
-        database.execute_query("INSERT INTO tables (numero) VALUES (?)", (numero,))
-        print(f"Table {numero} ajoutée.")
+        try: 
+            database.execute_query("INSERT INTO tables (numero) VALUES (?)", (numero,))
+            print(f"Table {numero} ajoutée.")
+        except sqlite3.Error as e:
+            print(f"La table {numero} existe déjà.")
 
     @staticmethod
     def supprimer_table(database, table_id):
@@ -100,6 +103,16 @@ class Table:
             (date, heure, heure, heure, heure)
         )
         return [Table(*data) for data in tables_data]
+
+    @staticmethod
+    def afficher_tables_disponibles(database, date, heure):
+        tables_disponibles = Table.get_tables_disponibles(database, date, heure)
+        if not tables_disponibles:
+            print("Aucune table disponible pour cette date et heure.")
+        else:
+            print(f"Tables disponibles pour le {date} à {heure}:")
+            for table in tables_disponibles:
+                print(table)
 
 class Reservation:
     def __init__(self, id, client, table, nombre_personnes, date, heure):
@@ -133,15 +146,15 @@ class Reservation:
             print(reservation)
 
     @staticmethod
-    def ajouter_reservation(database, client_id, table_id, nombre_personnes, date, heure):
+    def ajouter_reservation(database, client_id, table_id, nombre_personne, date, heure):
         tables_disponibles = Table.get_tables_disponibles(database, date, heure)
         if table_id not in [table.id for table in tables_disponibles]:
             print(f"Table {table_id} non disponible.")
             return
 
         database.execute_query(
-            "INSERT INTO reservations (client_id, table_id, nombre_personne, date, heure) VALUES (?, ?, ?, ?, ?)",
-            (client_id, table_id, nombre_personnes, date, heure)
+            "INSERT INTO reservations (client_id, date, heure, table_id, nombre_personne) VALUES (?, ?, ?, ?, ?)",
+            (client_id, date, heure, table_id, nombre_personne)
         )
         print(f"Réservation ajoutée pour le client {client_id}.")
 
@@ -200,10 +213,10 @@ class Plat:
 
 class Commande:
     @staticmethod
-    def ajouter_commande(database, reservation_id, plat_id, quantite):
+    def ajouter_commande(database, reservation_id, table_id, plat_id, quantite):
         database.execute_query(
-            "INSERT INTO commandes (reserv_id, plat_id, quantite) VALUES (?, ?, ?)",
-            (reservation_id, plat_id, quantite)
+            "INSERT INTO commandes (reserv_id, table_id, plat_id, quantite) VALUES (?, ?, ?, ?)",
+            (reservation_id, table_id, plat_id, quantite)
         )
         print(f"Commande ajoutée pour la réservation {reservation_id}.")
 
@@ -238,11 +251,9 @@ class Commande:
         database.execute_query("DELETE FROM commandes WHERE id = ?", (commande_id,))
         print(f"Commande {commande_id} supprimée.")
 
-# Exemple d'utilisation
-database = DatabaseHandler("restaurant.db")
-Client.afficher_clients(database)
-Table.afficher_tables(database)
-Plat.afficher_menu(database)
-Reservation.afficher_reservations(database)
-Client.supprimer_client(database, 2)
+    @staticmethod
+    def table_id_via_reservation_id(database, reservation_id):
+        table_id = database.execute_query("SELECT table_id FROM reservations WHERE id = ?", (reservation_id,))
+        return table_id[0][0]
 
+database = DatabaseHandler("restaurant.db")
