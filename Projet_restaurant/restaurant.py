@@ -1,9 +1,11 @@
 import sqlite3
+from database_handler import DatabaseHandler  # Nouveau fichier pour la gestion DB
 from plats import Plat
 from tables import Table
 from clients import Client
 from commandes import Commande
 from reservations import Reservation
+
 
 class DatabaseHandler:
     def __init__(self, database):

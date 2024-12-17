@@ -1,4 +1,4 @@
-from restaurant import *
+from database_handler import *
 
 class Plat:
     def __init__(self, id, nom, prix):

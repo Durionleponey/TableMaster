@@ -1,4 +1,5 @@
-from restaurant import *
+from database_handler import *
+from plats import Plat
 
 class Commande:
 

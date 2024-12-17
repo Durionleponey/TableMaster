@@ -1,4 +1,4 @@
-from restaurant import *
+from database_handler import *
 
 class Client:
     def __init__(self, id, prenom, nom, telephone):
@@ -13,7 +13,7 @@ class Client:
     @staticmethod
     def ajouter_client(database, prenom, nom, telephone):
         try:
-            database.execute_query("INSERT INTO clients (prenom, nom, telephone) VALUES (?, ?, ?)", (prenom, nom, telephone))
+            get_client(database, prenom, nom, telephone)
             print(f"Client ajouté : {prenom} {nom}")
         except sqlite3.Error as e:
             print(f"Erreur SQL : {e}")
@@ -30,6 +30,7 @@ class Client:
 
     @staticmethod
     def supprimer_client(database, client_id):
+        from reservations import Reservation
         reservations = database.execute_query("SELECT id FROM reservations WHERE client_id = ?", (client_id,))
         for reserv in reservations:
             Reservation.supprimer_reservation(database, reserv[0])

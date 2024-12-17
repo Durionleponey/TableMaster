@@ -1,4 +1,6 @@
-from restaurant import *
+from database_handler import *
+from tables import Table
+from clients import Client
 
 
 class Reservation:
@@ -37,6 +39,7 @@ class Reservation:
 
     @staticmethod
     def ajouter_reservation(database, client_id, table_id, nombre_personne, date, heure):
+        from clients import Client
         try:
             tables_disponibles = Table.get_tables_disponibles(database, date, heure)
             if table_id not in [table.id for table in tables_disponibles]:
