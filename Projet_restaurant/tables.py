@@ -11,7 +11,7 @@ class Table:
     @staticmethod
     def afficher_tables(database):
         try:
-            tables_data = database.execute_query("SELECT id, numero FROM tables")
+            tables_data = get_table(database)
             tables = [Table(*data) for data in tables_data]
             for table in tables:
                 print(f"Id : {table.id} -- {table}")
@@ -21,7 +21,7 @@ class Table:
     @staticmethod
     def ajouter_table(database, numero):
         try:
-            database.execute_query("INSERT INTO tables (numero) VALUES (?)", (numero,))
+            add_table(database, numero)
             print(f"Table {numero} ajoutée.")
         except sqlite3.Error as e:
             print(f"La table {numero} existe déjà.")
@@ -29,32 +29,19 @@ class Table:
     @staticmethod
     def supprimer_table(database, table_id):
         try:
-            reservations = database.execute_query("SELECT id FROM reservations WHERE table_id = ?", (table_id,))
+            reservations = select_id_resrv_table(database, table_id)
             if reservations:
                 print(f"La table {table_id} est associée à des réservations et ne peut pas être supprimée.")
                 return
 
-            database.execute_query("DELETE FROM tables WHERE id = ?", (table_id,))
+            delete_table(database, table_id)
             print(f"Table {table_id} supprimée.")
         except sqlite3.Error as e:
             print(f"Erreur SQL : {e}")
 
     @staticmethod
     def get_tables_disponibles(database, date, heure):
-        tables_data = database.execute_query(
-            """
-            SELECT T.id, T.numero
-            FROM tables AS T
-            WHERE NOT EXISTS (
-                SELECT 1 FROM reservations AS R
-                WHERE R.table_id = T.id AND R.date = ? AND (
-                    (R.heure BETWEEN ? AND TIME(?, '+2 hours')) OR
-                    (TIME(R.heure, '+2 hours') > ? AND R.heure < ?)
-                )
-            )
-            """,
-            (date, heure, heure, heure, heure)
-        )
+        tables_data = select_table_dispo(database, date ,heure)
         return [Table(*data) for data in tables_data]
 
     @staticmethod

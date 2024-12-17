@@ -12,7 +12,7 @@ class Plat:
     @staticmethod
     def afficher_menu(database):
         try:
-            plats_data = database.execute_query("SELECT id, nom, prix FROM menu")
+            plats_data = get_plat(database)
             plats = [Plat(*data) for data in plats_data]
             for plat in plats:
                 print(plat)
@@ -22,7 +22,7 @@ class Plat:
     @staticmethod
     def ajouter_plat(database, nom, prix):
         try:
-            database.execute_query("INSERT INTO menu (nom, prix) VALUES (?, ?)", (nom, prix))
+            add_plat(database, nom, prix)
             print(f"Plat ajouté : {nom} - {prix}€")
         except sqlite3.Error as e:
             print(f"Erreur SQL : {e}")
@@ -30,7 +30,7 @@ class Plat:
     @staticmethod
     def supprimer_plat(database, plat_id):
         try:
-            database.execute_query("DELETE FROM menu WHERE id = ?", (plat_id,))
+            delete_plat(database, plat_id)
             print(f"Plat {plat_id} supprimé.")
         except sqlite3.Error as e:
             print(f"Erreur SQL : {e}")
@@ -38,10 +38,7 @@ class Plat:
     @staticmethod
     def modifier_plat(database, plat_id, nouveau_nom, nouveau_prix):
         try:
-            database.execute_query(
-                "UPDATE menu SET nom = ?, prix = ? WHERE id = ?",
-                (nouveau_nom, nouveau_prix, plat_id)
-            )
+            modify_plat(database, nouveau_nom, nouveau_prix, plat_id)
             print(f"Plat {plat_id} modifié en {nouveau_nom} - {nouveau_prix}€.")
         except sqlite3.Error as e:
             print(f"Erreur SQL : {e}")
