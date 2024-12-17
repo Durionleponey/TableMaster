@@ -1,7 +1,7 @@
 from restaurant import *
 
 def menu_principal():
-    database = database_handler("restaurant.db")
+    database = DatabaseHandler("restaurant.db")
     while True:
         print("\n--- Shell de Restaurant ---")
         print("1. Gestion des tables")
