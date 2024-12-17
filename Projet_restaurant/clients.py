@@ -2,13 +2,40 @@ from database_handler import *
 
 class Client:
     def __init__(self, id, prenom, nom, telephone):
-        self.id = id
-        self.prenom = prenom
-        self.nom = nom
-        self.telephone = telephone
+        self._id = id
+        self._prenom = prenom
+        self._nom = nom
+        self._telephone = telephone
+
+
+    @property
+    def id(self):
+        return self._id
+
+    @id.setter
+    def id(self, value):
+        raise AttributeError("L'ID ne peut pas être modifié!")
+
+    @property
+    def prenom(self):
+        return self._prenom
+
+
+    @property
+    def nom(self):
+        return self._nom
+
+    @nom.setter
+    def nom(self, value):
+        self._nom = value
+
+    @property
+    def telephone(self):
+        return self._telephone
+
 
     def __str__(self):
-        return f"{self.id}: {self.prenom} {self.nom}, Téléphone: {self.telephone}"
+        return f"{self._id}: {self._prenom} {self._nom}, Téléphone: {self._telephone}"
 
     @staticmethod
     def ajouter_client(database, prenom, nom, telephone):
