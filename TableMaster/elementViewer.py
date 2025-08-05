@@ -1,7 +1,7 @@
 from shutil import posix
 from traceback import print_tb
 
-from TableMaster.settings import on_color_change
+from settings import on_color_change
 from entities import *
 from tkinter import ttk
 from manageDB import *
