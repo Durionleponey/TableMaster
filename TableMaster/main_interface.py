@@ -1,7 +1,7 @@
 from multiprocessing.spawn import import_main_path
 from tkinter import messagebox
 
-from TableMaster.formulaire_reservation import formulaire_reservation_line
+from formulaire_reservation import formulaire_reservation_line
 from elementViewer import *
 from settings import *
 from booking import *
